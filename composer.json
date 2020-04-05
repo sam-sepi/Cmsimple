@@ -1,0 +1,17 @@
+{
+    "name": "sam-sepi/cmsimple",
+    "description": "Simple CMS",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "sam sepi",
+            "email": "sam.sepi.84@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "firebase/php-jwt": "^5.2",
+        "vlucas/phpdotenv": "^4.1"
+    }
+}
