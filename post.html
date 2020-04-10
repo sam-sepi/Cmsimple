@@ -1,20 +1,35 @@
-<script>
-var post = {};
+<!DOCTYPE html>
+<html>
+    <head>
 
-post.title = 'Titolo';
-post.description = 'Description';
-post.text = 'Text of Post';
+    </head>
 
-timestamp = Date();
-post.timestamp = timestamp;
+    <body>
+        <script>
 
-post.api = 'apikey';
+            writePost();
+            
+            async function writePost()
+            {
+                jwt = localStorage.getItem("jwt");
 
-async function writePost()
-{
-    const request = await fetch();
-    const response = await request.json();
-    
-}
+                const request = await fetch('api/post.php',
+                {
+                    method: "post",
+                    headers: new Headers({
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + jwt
+                    }),
+                    body: JSON.stringify({
+                        title: 'Title',
+                        description: 'Descr',
+                        text: 'Text'
+                    })
+                });
 
-</script>
+                const response = await request.json();
+            }
+            
+        </script>
+    </body>
+</html>
