@@ -7,7 +7,7 @@ class Post
     protected $post = [];
     protected $path = '../content/';
 
-    public function __construct(array $post) //verificarlo a livello di API e resitituire BAD REQUEST in caso mancasse una proprietà necessaria
+    public function __construct(array $post)
     {
         if($this->filterString($post['title']) == true)
         {
@@ -35,8 +35,26 @@ class Post
         {
             $this->post['text'] = 'Text undefined';
         }
+        
+        if($this->filterId($post['id']) == true)
+        {
+            $this->post['id'] = $post['id'];
+        }
+        else
+        {
+            $this->post['id'] = uniqid();
+        }
+
+        $this->post['date'] = date("Y-m-d");
+
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $string
+     * @return boolean
+     */
     protected function filterString(string $string = null): bool
     {
         if(isset($string)):
@@ -54,6 +72,13 @@ class Post
         endif;
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $text
+     * @param boolean $html
+     * @return boolean
+     */
     protected function filterText(string $text = null, $html = FALSE): bool
     {
         if(isset($text))
@@ -103,26 +128,32 @@ class Post
 
     }
 
+    protected function filterId(string $id = null)
+    {
+        if($id == null):
+            return false;
+
+        elseif(strlen($id) > 20):
+            return false;
+        
+        elseif(!ctype_alnum($id)):
+            return false;
+
+        else:
+            return true;
+        
+        endif;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
     public function create()
     {
-        $id = uniqid();
-        $file = fopen($this->path . $id . '.txt', 'w') or die("Unable to open file!");
-        fwrite($file, json_encode($this->post, JSON_PRETTY_PRINT));
-        fclose($file);
-    }
-
-    public function update()
-    {
-
-    }
-
-    public function delete()
-    {
-
-    }
-
-    public function read()
-    {
-
+        $file = @fopen($this->path . $this->post['id'] . '.txt', 'w');
+        @fwrite($file, json_encode($this->post, JSON_PRETTY_PRINT));
+        @fclose($file);
     }
 }

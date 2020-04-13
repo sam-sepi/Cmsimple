@@ -58,7 +58,7 @@ class Token
 
         if(time() >= $decode->expire) return false;
 
-        //if(!array_key_exists($decode->data['user'], $this->users)) return false;
+        if(!array_key_exists($decode->data->user, $this->users)) return false;
 
         return true;
     }

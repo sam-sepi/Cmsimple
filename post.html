@@ -17,11 +17,12 @@
                 {
                     method: "post",
                     headers: new Headers({
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + jwt
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + jwt
                     }),
                     body: JSON.stringify({
-                        title: 'Title',
+                        id: 'mypost',
+                        title: 'Title testing',
                         description: 'Descr',
                         text: 'Text'
                     })

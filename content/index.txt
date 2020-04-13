@@ -1,0 +1,6 @@
+{
+    "title": "Title testing",
+    "description": "Descr",
+    "text": "Text",
+    "id": "mypost"
+}

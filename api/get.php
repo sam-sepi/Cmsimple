@@ -8,13 +8,23 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'get')
 
     if(ctype_alnum($param) == TRUE)
     {
-        if(file_get_contents('../content/' . $param . '.txt') == false)
+        if(@file_get_contents('../content/' . $param . '.txt') == false)
         {
-            //404
+            $post = [
+                'title' => 'Page 404',
+                'description' => 'Not Found',
+                'text' => 'Resource not found'
+            ];
+
+            echo json_encode($post);
+
+            header('HTTP/1.0 404 Not Found');
+            exit();
+
         }
         else
         {
-            $data = json_decode(file_get_contents('../content/' . $param . '.txt'), TRUE);
+            $data = json_decode(@file_get_contents('../content/' . $param . '.txt'), TRUE);
 
             echo json_encode($data);
         }
