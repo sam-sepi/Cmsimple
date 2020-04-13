@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title id="page_title"></title>
+        <meta name="description" content="" id="description">
+    </head>
+    <body>
+        
+        <h1 id="post_title"></h1>
+
+        <h3 id="text"></h3>
+
+        <script>
+            readPost();
+
+            async function readPost()
+            {
+                const queryString = window.location.search;
+                const param = queryString.substring(1);
+                const req = await fetch('api/get.php?' + param);
+                const res = await req.json();
+
+                document.getElementById('post_title').innerHTML = res.title;
+                document.getElementById('text').innerHTML = res.text;
+
+                //META
+                document.getElementById('page_title').innerHTML = res.title;
+                document.getElementById('description').setAttribute('content', res.description);
+
+                //SCHEMA
+                var data = 
+                {
+                    "@context": "http://schema.org",
+                    "@type": "Article",
+                    "articleBody": res.text,
+                    "abstract": res.description,
+                    "headline": res.title,
+                    "publisher": 'I',
+                    "author": 'I',
+                    "datePublished" : res.date
+                }
+
+                var script = document.createElement('script');
+                script.type = "application/ld+json";
+                script.innerHTML = JSON.stringify(data);
+                document.getElementsByTagName('head')[0].appendChild(script);
+            }
+        </script>
+    </body>
+</html>

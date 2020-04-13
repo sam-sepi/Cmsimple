@@ -42,6 +42,11 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'post')
                 exit();
             }
         }
+        else
+        {
+            header('HTTP/1.0 401 Unauthorized');
+            exit();
+        }
     }
     else
     {
