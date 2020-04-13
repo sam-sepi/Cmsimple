@@ -5,10 +5,14 @@
     </head>
 
     <body>
+        <input type="text" id="IDPost" placeholder="POST ID">
+        <input type="text" id="title" placeholder="Title">
+        <textarea id="description"></textarea>
+        <textarea id="text"></textarea>
+        <input type="submit" value="Enter" onclick="writePost()">
+
         <script>
 
-            writePost();
-            
             async function writePost()
             {
                 jwt = localStorage.getItem("jwt");
@@ -21,10 +25,10 @@
                         "Authorization": "Bearer " + jwt
                     }),
                     body: JSON.stringify({
-                        id: 'mypost',
-                        title: 'Title testing',
-                        description: 'Descr',
-                        text: 'Text'
+                        id: document.getElementById('IDPost').value,
+                        title: document.getElementById('title').value,
+                        description: document.getElementById('description').value,
+                        text: document.getElementById('text').value
                     })
                 });
 

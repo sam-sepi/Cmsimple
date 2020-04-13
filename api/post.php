@@ -13,22 +13,30 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'post')
         {
             $jwt = new Cmsimple\Token;
 
-            if($jwt->verify($matches[1]) == true)
+            try
             {
-                $json = json_decode(file_get_contents('php://input'), TRUE);
-                
-                if(empty($json))
+                if($jwt->verify($matches[1]) == true)
                 {
-                    header('HTTP/1.0 400 Bad Request');
-                    exit();
+                    $json = json_decode(file_get_contents('php://input'), TRUE);
+                    
+                    if(empty($json))
+                    {
+                        header('HTTP/1.0 400 Bad Request');
+                        exit();
+                    }
+                    else
+                    {
+                        $post = new Cmsimple\Post($json);
+                        $post->create();
+                    }
                 }
                 else
                 {
-                    $post = new Cmsimple\Post($json);
-                    $post->create();
+                header('HTTP/1.0 401 Unauthorized');
+                exit();
                 }
-            }
-            else
+
+            } catch(Exception $e) //intercept firebase Exception
             {
                 header('HTTP/1.0 401 Unauthorized');
                 exit();

@@ -7,6 +7,11 @@ class Post
     protected $post = [];
     protected $path = '../content/';
 
+    /**
+     * Undocumented function
+     *
+     * @param array $post
+     */
     public function __construct(array $post)
     {
         if($this->filterString($post['title']) == true)
@@ -128,6 +133,12 @@ class Post
 
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param string $id
+     * @return void
+     */
     protected function filterId(string $id = null)
     {
         if($id == null):

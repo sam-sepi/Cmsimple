@@ -56,6 +56,10 @@ class Token
 
         $decode = JWT::decode($jwt, $this->key, array('HS256'));
 
+        if(empty($decode)) return false;
+
+        $decode = JWT::decode($jwt, $this->key, array('HS256'));
+
         if(time() >= $decode->expire) return false;
 
         if(!array_key_exists($decode->data->user, $this->users)) return false;
