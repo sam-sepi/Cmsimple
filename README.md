@@ -23,6 +23,8 @@ Examples of how to manage the client side are the auth.html, post.html, update.h
 ## Depend.
 
 [PHP-JWT](https://github.com/firebase/php-jwt)
+
+
 [phpdotenv](https://github.com/vlucas/phpdotenv)
 
 ## Author
