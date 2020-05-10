@@ -1,7 +1,0 @@
-{
-    "title": "Title testing",
-    "description": "Descr",
-    "text": "Text",
-    "id": "mypost",
-    "date": "2020-04-13"
-}

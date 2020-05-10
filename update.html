@@ -2,21 +2,43 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title id="page_title">Write</title>
-        <meta name="description" content="Write Post">
+        <title id="page_title">Update</title>
+        <meta name="description" content="Post update">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            #description
+             {
+                 color: 000;
+             }
+        </style>
     </head>
 
     <body>
-        <input type="text" id="IDPost" placeholder="POST ID">
-        <input type="text" id="title" placeholder="Title">
+
+        <input type="text" id="IDPost">
+        <input type="text" id="title">
         <textarea id="description"></textarea>
         <textarea id="text"></textarea>
-        <input type="submit" value="Enter" onclick="writePost()">
+        <input type="submit" value="Enter" onclick="updatePost()">
 
         <script>
 
-            async function writePost()
+            readPost();
+
+            async function readPost()
+            {
+                const queryString = window.location.search;
+                const param = queryString.substring(1);
+                const req = await fetch('api/get.php?' + param);
+                const res = await req.json();
+
+                document.getElementById('IDPost').value = res.id;
+                document.getElementById('title').value = res.title;
+                document.getElementById('description').value = res.description;
+                document.getElementById('text').value = res.text;
+            }
+
+            async function updatePost()
             {
                 jwt = localStorage.getItem("jwt");
 
@@ -37,7 +59,7 @@
 
                 const response = await request.json();
             }
-            
+
         </script>
     </body>
 </html>

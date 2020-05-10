@@ -2,169 +2,83 @@
 
 namespace Cmsimple;
 
+use Cmsimple\Validation;
+
 class Post
 {
-    protected $post = [];
     protected $path = '../content/';
+    protected $validate;
+    public $error = FALSE;
+    protected $msg = [];
+
 
     /**
-     * Undocumented function
-     *
-     * @param array $post
+     * Constr.
      */
-    public function __construct(array $post)
+    public function __construct()
     {
-        if($this->filterString($post['title']) == true)
-        {
-            $this->post['title'] = $post['title'];
-        }
-        else
-        {
-            $this->post['title'] = 'Title undefined';
-        }
-
-        if($this->filterString($post['description']) == true)
-        {
-            $this->post['description'] = $post['description'];
-        }
-        else
-        {
-            $this->post['description'] = 'Description undefined';
-        }
-
-        if($this->filterText($post['text']) == true)
-        {
-            $this->post['text'] = $post['text'];
-        }
-        else
-        {
-            $this->post['text'] = 'Text undefined';
-        }
-        
-        if($this->filterId($post['id']) == true)
-        {
-            $this->post['id'] = $post['id'];
-        }
-        else
-        {
-            $this->post['id'] = uniqid();
-        }
-
-        $this->post['date'] = date("Y-m-d");
-
+        $this->validate = new Validation();
     }
 
-    /**
-     * Undocumented function
-     *
-     * @param string $string
-     * @return boolean
-     */
-    protected function filterString(string $string = null): bool
+   /**
+    * create
+    *
+    * @param array $post
+    * @return array
+    */
+    public function create(array $post = null): array
     {
-        if(isset($string)):
 
-            $string = filter_var($string, FILTER_SANITIZE_STRING);
-            
-            if(trim($string) !== null):
-                return true;
-            else:
-                return false;
-            endif;
-
-        else:
-            return false;
-        endif;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $text
-     * @param boolean $html
-     * @return boolean
-     */
-    protected function filterText(string $text = null, $html = FALSE): bool
-    {
-        if(isset($text))
+        if($this->validate->filterString($post['title']) == false)
         {
-            if($html == FALSE) 
-            {
-                $text = filter_var($text, FILTER_SANITIZE_STRING);
-            
-                if(trim($text) !== null):
+            $this->error = TRUE;
+            $this->message[] = 'Title error';
+            return $this->message;
+        }
 
-                    return true;
-                else:
+        if($this->validate->filterString($post['description']) == false)
+        {
+            $this->error = TRUE;
+            $this->message[] = 'Description error';
+            return $this->message;
+        }
 
-                    return false;
-                endif;
-            }
-            else
-            {
-                $tags = [
+        if($this->validate->filterText($post['text']) == false)
+        {
+            $this->error = TRUE;
+            $this->message[] = 'Text error';
+            return $this->message;
+        }
 
-                    "#( on[a-zA-Z]+=\"?'?[^\s\"']+'?\"?)#is"=> "",
-                    "#(javascript:[^\s\"']+)#is"			=> "",
-                    "#(<script.*?>.*?(<\/script>)?)#is" 	=> "",
-                    "#(<iframe.*?\/?>.*?(<\/iframe>)?)#is" 	=> "",
-                    "#(<object.*?>.*?(<\/object>)?)#is"		=> "",
-                    "#(<embed.*?\/?>.*?(<\/embed>)?)#is"	=> "",
-                    "#( on[a-zA-Z]+=\"?'?[^\s\"']+'?\"?)#is"=> "",
-                    "#(javascript:[^\s\"']+)#is"			=> ""
-                
-                ];
+        if($this->validate->filterText($post['id']) == false)
+        {
+            $this->error = TRUE;
+            $this->message[] = 'ID error';
+            return $this->message;
+        }
 
-                $text = preg_replace(array_keys($tags), array_values($tags), $text);
+        $file = @fopen($this->path . $post['id'] . '.txt', 'w');
 
-                if(trim($text) !== null):
+        //clean array
+        $post = [
 
-                    return true;
-                else:
+            'title' => $post['title'],
+            'description' => $post['description'],
+            'text' => $post['text'],
+            'date' => date("Y-m-d")
+        ];
 
-                    return false;
-                endif;
-            }
+        if(@fwrite($file, json_encode($post, JSON_PRETTY_PRINT)) != FALSE)
+        {
+            @fclose($file);
+            $this->message[] = 'Post saved';
+            return $this->message;
         }
         else
         {
-            return false;
+            $this->error = TRUE;
+            $this->message[] = 'Save Error!';
+            return $this->message;
         }
-
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param string $id
-     * @return void
-     */
-    protected function filterId(string $id = null)
-    {
-        if($id == null):
-            return false;
-
-        elseif(strlen($id) > 20):
-            return false;
-        
-        elseif(!ctype_alnum($id)):
-            return false;
-
-        else:
-            return true;
-        
-        endif;
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    public function create()
-    {
-        $file = @fopen($this->path . $this->post['id'] . '.txt', 'w');
-        @fwrite($file, json_encode($this->post, JSON_PRETTY_PRINT));
-        @fclose($file);
     }
 }

@@ -15,7 +15,7 @@ class Token
     ];
 
     /**
-     * Undocumented function
+     * getToken
      *
      * @param string $user
      * @return string
@@ -45,7 +45,7 @@ class Token
     }
 
     /**
-     * Undocumented function
+     * verify
      *
      * @param string $jwt
      * @return boolean

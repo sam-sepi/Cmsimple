@@ -20,7 +20,6 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'get')
 
             header('HTTP/1.0 404 Not Found');
             exit();
-
         }
         else
         {
@@ -28,7 +27,6 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'get')
 
             echo json_encode($data);
         }
-
     }
     else
     {

@@ -19,21 +19,24 @@ if(strtolower($_SERVER['REQUEST_METHOD']) == 'post')
                 {
                     $json = json_decode(file_get_contents('php://input'), TRUE);
                     
-                    if(empty($json))
+                    $post = new Cmsimple\Post();
+                    $response = $post->create($json);
+
+                    if($post->error == TRUE)
                     {
+                        echo json_encode($response, JSON_PRETTY_PRINT);
                         header('HTTP/1.0 400 Bad Request');
                         exit();
                     }
                     else
                     {
-                        $post = new Cmsimple\Post($json);
-                        $post->create();
+                        echo json_encode($response, JSON_PRETTY_PRINT);
                     }
                 }
                 else
                 {
-                header('HTTP/1.0 401 Unauthorized');
-                exit();
+                    header('HTTP/1.0 401 Unauthorized');
+                    exit();
                 }
 
             } catch(Exception $e) //intercept firebase Exception
