@@ -20,6 +20,11 @@ In the text parameter html code can be filtered.
 
 Examples of how to manage the client side are the auth.html, post.html, update.html files. Personally I recommend keeping these files locally and pointing with js fetch to the server (if the cms was online).
 
+## Depend.
+
+[PHP-JWT](https://github.com/firebase/php-jwt)
+[phpdotenv](https://github.com/vlucas/phpdotenv)
+
 ## Author
 
 Sam Sepi - Init. work
