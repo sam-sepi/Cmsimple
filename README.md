@@ -4,7 +4,9 @@ Trivial CMS in PHP and JS
 
 ## Get started
 
+```
 git clone https://github.com/sam-sepi/Cmsimple
+```
 
 ## Documentation
 
