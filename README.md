@@ -14,7 +14,9 @@ CMSimple does not use databases. Any content shared between server and client is
 
 To add or update the contents you must authenticate by sending the user and pass data in JSON format to the jwt.php file (located in the api folder). After checking the correspondence with the data in the .env file, a JWT is released and saved in local storage.
 
-Then you can send data (id, title, description, text) via POST in JSON format to save the content on the server. The ID parameter will also be the name of the .txt file saved online and has a maximum of 20 characters. Same ID changes the contents of the file.
+Then you can send data (id, title, description, text) via POST in JSON format to save the content on the server. The ID parameter will also be the name of the .txt file saved online and has a maximum of 20 characters. Same ID changes the contents of the file. 
+
+Among the headers of the request, the JWT must also be sent according to the [protocol](https://tools.ietf.org/html/rfc7519) specifications.
 
 In the text parameter html code can be filtered.
 
